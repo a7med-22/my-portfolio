@@ -4,33 +4,35 @@ import { useRef, useState, Suspense } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
   Text3D,
-  useMatcapTexture,
   OrbitControls,
   useFont,
+  Float,
+  Environment,
+  Stars,
 } from "@react-three/drei";
 import * as THREE from "three";
 
 function ModelContent() {
-  const [matcapTexture] = useMatcapTexture("7B5254_E9DCC7_B19986_C8AC91", 256);
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const font = useFont("/fonts/helvetiker_regular.typeface.json");
 
   useFrame((state) => {
+    const time = state.clock.getElapsedTime();
     if (meshRef.current) {
-      meshRef.current.rotation.x += 0.01;
-      meshRef.current.rotation.y += 0.01;
+      meshRef.current.rotation.x = time * 0.1;
+      meshRef.current.rotation.y = time * 0.1;
     }
     if (groupRef.current) {
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
-        (state.mouse.x * Math.PI) / 10,
+        (state.mouse.x * Math.PI) / 20,
         0.1
       );
       groupRef.current.rotation.x = THREE.MathUtils.lerp(
         groupRef.current.rotation.x,
-        (state.mouse.y * Math.PI) / 10,
+        (state.mouse.y * Math.PI) / 20,
         0.1
       );
     }
@@ -40,19 +42,37 @@ function ModelContent() {
 
   return (
     <group ref={groupRef} position={[0, -1, 0]}>
-      <mesh
-        ref={meshRef}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        scale={hovered ? [1.1, 1.1, 1.1] : [1, 1, 1]}
-      >
-        <icosahedronGeometry args={[1, 0]} />
-        <meshMatcapMaterial matcap={matcapTexture} />
-      </mesh>
+      <Environment preset="city" />
+      <Stars
+        radius={100}
+        depth={50}
+        count={5000}
+        factor={4}
+        saturation={0}
+        fade
+        speed={1}
+      />
+
+      <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+        <mesh
+          ref={meshRef}
+          onPointerOver={() => setHovered(true)}
+          onPointerOut={() => setHovered(false)}
+          scale={hovered ? [1.15, 1.15, 1.15] : [1, 1, 1]}
+        >
+          <torusKnotGeometry args={[1, 0.4, 100, 16]} />
+          <meshStandardMaterial
+            color="#6b46c1"
+            roughness={0.1}
+            metalness={0.3}
+            envMapIntensity={0.5}
+          />
+        </mesh>
+      </Float>
 
       <Text3D
         font={font.data}
-        size={0.5}
+        size={0.4}
         height={0.2}
         curveSegments={12}
         bevelEnabled
@@ -60,10 +80,16 @@ function ModelContent() {
         bevelSize={0.02}
         bevelOffset={0}
         bevelSegments={5}
-        position={[0, -2, 0]}
+        position={[1, -2, 0]}
       >
-        Portfolio
-        <meshMatcapMaterial matcap={matcapTexture} />
+        Frontend developer
+        <meshStandardMaterial
+          color="#ffffff"
+          emissive="#6b46c1"
+          emissiveIntensity={0.5}
+          roughness={0.3}
+          metalness={0.8}
+        />
       </Text3D>
 
       <OrbitControls
