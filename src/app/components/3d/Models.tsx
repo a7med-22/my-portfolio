@@ -1,24 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, Suspense } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text3D, useMatcapTexture, OrbitControls } from "@react-three/drei";
+import {
+  Text3D,
+  useMatcapTexture,
+  OrbitControls,
+  useFont,
+} from "@react-three/drei";
 import * as THREE from "three";
 
-export default function Models() {
+function ModelContent() {
   const [matcapTexture] = useMatcapTexture("7B5254_E9DCC7_B19986_C8AC91", 256);
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
-  const [font, setFont] = useState<any>(null);
-
-  // Load font
-  useEffect(() => {
-    import("@react-three/drei").then((module) => {
-      <module className="preloadFont"></module>("/fonts/helvetiker_regular.typeface.json");
-      setFont(true);
-    });
-  }, []);
+  const font = useFont("/fonts/helvetiker_regular.typeface.json");
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -54,7 +51,7 @@ export default function Models() {
       </mesh>
 
       <Text3D
-        font="/fonts/helvetiker_regular.typeface.json"
+        font={font.data}
         size={0.5}
         height={0.2}
         curveSegments={12}
@@ -77,5 +74,13 @@ export default function Models() {
         minPolarAngle={Math.PI / 2}
       />
     </group>
+  );
+}
+
+export default function Models() {
+  return (
+    <Suspense fallback={null}>
+      <ModelContent />
+    </Suspense>
   );
 }

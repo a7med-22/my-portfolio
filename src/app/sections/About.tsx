@@ -1,84 +1,101 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
 import Section from "../components/ui/Section";
 
 const skills = [
-  "React",
-  "Three.js",
-  "TypeScript",
-  "Next.js",
-  "Tailwind CSS",
-  "Framer Motion",
-  "Blender",
-  "GSAP",
+  { name: "React", level: 90 },
+  { name: "Three.js", level: 85 },
+  { name: "TypeScript", level: 88 },
+  { name: "Next.js", level: 92 },
+  { name: "Framer Motion", level: 80 },
+  { name: "Blender", level: 75 },
+];
+
+const experience = [
+  {
+    role: "Senior Frontend Developer",
+    company: "Tech Innovations Inc.",
+    period: "2020 - Present",
+    description:
+      "Leading the frontend team in building interactive 3D web applications.",
+  },
+  {
+    role: "UI/UX Designer",
+    company: "Creative Solutions",
+    period: "2018 - 2020",
+    description:
+      "Designed and implemented user interfaces for various clients.",
+  },
 ];
 
 export default function About() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const skillsRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    gsap.from(".skill-item", {
-      opacity: 0,
-      y: 50,
-      stagger: 0.1,
-      duration: 0.5,
-      scrollTrigger: {
-        trigger: skillsRef.current,
-        start: "top 80%",
-        toggleActions: "play none none none",
-      },
-    });
-  }, []);
-
   return (
     <Section id="about" title="About Me">
-      <div
-        ref={containerRef}
-        className="grid md:grid-cols-2 gap-12 items-center"
-      >
+      <div className="grid md:grid-cols-2 gap-12">
         <motion.div
-          initial={{ opacity: 0, x: -100 }}
+          initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-bold mb-4">Who I Am</h3>
-          <p className="mb-6">
-            I&apos;m a passionate frontend developer and 3D enthusiast with
-            expertise in creating immersive web experiences. I combine my skills
-            in web development and 3D design to build unique, interactive
-            portfolios and applications.
+          <h3 className="text-2xl font-bold mb-6">Who I Am</h3>
+          <p className="mb-4 text-gray-300">
+            I&apos;m a passionate frontend developer specializing in creating
+            immersive 3D web experiences. With over 5 years of experience in the
+            industry, I combine my skills in web development and 3D design to
+            build unique, interactive applications.
           </p>
-          <p>
-            With over 5 years of experience in the industry, I&apos;ve worked on
-            various projects ranging from simple websites to complex 3D web
-            applications.
+          <p className="mb-4 text-gray-300">
+            When I&apos;m not coding, you can find me creating 3D models,
+            exploring new technologies, or contributing to open-source projects.
           </p>
+
+          <h3 className="text-2xl font-bold mt-8 mb-6">Experience</h3>
+          <div className="space-y-6">
+            {experience.map((exp, index) => (
+              <div key={index} className="border-l-2 border-purple-500 pl-4">
+                <h4 className="text-xl font-semibold">{exp.role}</h4>
+                <p className="text-purple-400">
+                  {exp.company} • {exp.period}
+                </p>
+                <p className="mt-2 text-gray-400">{exp.description}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
 
         <motion.div
-          ref={skillsRef}
-          initial={{ opacity: 0, x: 100 }}
+          initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
           <h3 className="text-2xl font-bold mb-6">My Skills</h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="space-y-4">
             {skills.map((skill, index) => (
-              <motion.span
-                key={index}
-                className="skill-item px-4 py-2 bg-gray-800 rounded-full text-sm font-medium"
-                whileHover={{ scale: 1.05, backgroundColor: "#9333ea" }}
-              >
-                {skill}
-              </motion.span>
+              <div key={index}>
+                <div className="flex justify-between mb-1">
+                  <span>{skill.name}</span>
+                  <span>{skill.level}%</span>
+                </div>
+                <div className="w-full bg-gray-800 rounded-full h-2.5">
+                  <div
+                    className="bg-purple-600 h-2.5 rounded-full"
+                    style={{ width: `${skill.level}%` }}
+                  ></div>
+                </div>
+              </div>
             ))}
+          </div>
+
+          <h3 className="text-2xl font-bold mt-12 mb-6">Education</h3>
+          <div className="border-l-2 border-purple-500 pl-4">
+            <h4 className="text-xl font-semibold">
+              Master&apos;s in Computer Science
+            </h4>
+            <p className="text-purple-400">Stanford University • 2016 - 2018</p>
+            <p className="mt-2 text-gray-400">
+              Specialized in Human-Computer Interaction and 3D Graphics
+            </p>
           </div>
         </motion.div>
       </div>

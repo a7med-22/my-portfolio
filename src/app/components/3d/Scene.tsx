@@ -2,10 +2,8 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Preload } from "@react-three/drei";
-import { Suspense } from "react";
 import Models from "./Models";
 import Effects from "./Effects";
-import Loader from "./Loader";
 
 export default function Scene() {
   return (
@@ -19,12 +17,10 @@ export default function Scene() {
       gl={{ antialias: true }}
       className="canvas-container"
     >
-      <Suspense fallback={<Loader />}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <Models />
-        <Effects />
-      </Suspense>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} intensity={1} />
+      <Models />
+      <Effects />
       <Preload all />
     </Canvas>
   );

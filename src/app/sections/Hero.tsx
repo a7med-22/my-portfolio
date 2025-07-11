@@ -1,64 +1,54 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef } from "react";
-import { useInView } from "react-intersection-observer";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+import Image from "next/image";
 import Section from "../components/ui/Section";
 import Button from "../components/ui/Button";
 
 export default function Hero() {
-  const [, inView] = useInView({
-    threshold: 0.5,
-    triggerOnce: false,
-  });
-
-  const heroRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (inView) {
-      gsap.fromTo(
-        titleRef.current,
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
-      );
-      gsap.fromTo(
-        subtitleRef.current,
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.3 }
-      );
-      gsap.fromTo(
-        buttonRef.current,
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.6 }
-      );
-    }
-  }, [inView]);
-
   return (
     <Section id="hero" title="">
-      <div ref={heroRef} className="flex flex-col items-center justify-center">
-        <div className="text-center">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-12">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-purple-500 shadow-lg"
+        >
+          <Image
+            src="/profile.png" // Place your image in public folder
+            alt="John Doe"
+            fill
+            className="object-cover"
+            priority
+          />
+        </motion.div>
+
+        <div className="text-center md:text-left">
           <motion.h1
-            ref={titleRef}
-            className="text-5xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl md:text-6xl font-bold mb-4"
           >
-            Creative 3D Portfolio
+            Hi, I&apos;m <span className="text-purple-500">John Doe</span>
           </motion.h1>
           <motion.p
-            ref={subtitleRef}
-            className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-xl md:text-2xl mb-8 text-gray-300"
           >
-            Welcome to my interactive 3D portfolio showcasing my work and skills
-            in web development and 3D design.
+            Creative Frontend Developer & 3D Artist
           </motion.p>
-          <motion.div ref={buttonRef} className="flex justify-center gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="flex flex-wrap justify-center md:justify-start gap-4"
+          >
             <Button href="#projects" variant="primary">
-              View Projects
+              View My Work
             </Button>
             <Button href="#contact" variant="secondary">
               Contact Me
