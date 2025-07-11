@@ -8,12 +8,12 @@ import Button from "../components/ui/Button";
 export default function Hero() {
   return (
     <Section id="hero" title="">
-      <div className="flex flex-col md:flex-row items-center justify-center gap-12">
+      <div className="flex flex-col md:flex-row items-start justify-center gap-12">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-purple-500 shadow-lg"
+          className="relative -top-10 w-80 h-80 rounded-full overflow-hidden border-4 border-purple-500 shadow-lg"
         >
           <Image
             src="/profile.png" // Place your image in public folder

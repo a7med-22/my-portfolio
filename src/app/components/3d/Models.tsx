@@ -39,7 +39,7 @@ function ModelContent() {
   if (!font) return null;
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} position={[0, -1, 0]}>
       <mesh
         ref={meshRef}
         onPointerOver={() => setHovered(true)}
